@@ -8,6 +8,8 @@
      wa      → international click-to-chat destination (no "+", no leading 0)
    ========================================================================== */
 
+import { siteUrl } from '@/lib/siteUrl';
+
 export const site = {
   name: 'IDRISIYA COUTURE',
   shortName: 'IDRISIYA',
@@ -41,8 +43,9 @@ export const site = {
     { name: 'Facebook', href: '#', icon: 'facebook' as const },
     { name: 'TikTok', href: '#', icon: 'tiktok' as const },
   ],
-  // Swap this for your live domain when you deploy.
-  url: 'https://idrisiyacouture.example.com',
+  // Resolved from NEXT_PUBLIC_SITE_URL, falling back to the Vercel domain.
+  // See lib/siteUrl.ts and .env.example.
+  url: siteUrl,
 } as const;
 
 export const primaryWhatsApp = site.phones[0].wa;

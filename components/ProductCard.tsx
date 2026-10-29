@@ -9,6 +9,7 @@ import {
   type Product,
 } from '@/data/products';
 import { productOrderMessage, waLink } from '@/lib/whatsapp';
+import { siteUrl } from '@/lib/siteUrl';
 import { WhatsApp } from './Icons';
 import AddToCartButton from './AddToCartButton';
 
@@ -17,7 +18,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
   const waMessage = productOrderMessage(
     product,
     { size: product.sizes[0], colour: product.colours[0]?.name, quantity: 1 },
-    'https://idrisiyacouture.example.com',
+    siteUrl,
   );
 
   return (

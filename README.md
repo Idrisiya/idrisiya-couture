@@ -14,6 +14,8 @@ npm run build   # production build
 npm start       # serve the production build
 ```
 
+Optional: `cp .env.example .env.local` and set `NEXT_PUBLIC_SITE_URL` (see *Deploying to Vercel*).
+
 ---
 
 ## What's included
@@ -117,6 +119,55 @@ Both are displayed with `object-contain` inside responsive frames — never stre
 
 4. **No inventory system.** Availability labels say "Available to order" / "Made to order" / "Enquire for
    availability" — never fake stock counts.
+
+---
+
+## Deploying to Vercel
+
+This project is pre-configured for Vercel — there is nothing to change before your first deploy.
+
+### One-click deploy
+1. Go to **[vercel.com/new](https://vercel.com/new)** and sign in with GitHub.
+2. Import **`Idrisiya/idrisiya-couture`**.
+3. Vercel auto-detects Next.js. Leave **Framework Preset: Next.js**, build `next build`,
+   install `npm ci` — then press **Deploy**.
+4. Your site is live at `https://idrisiya-couture.vercel.app` in about a minute.
+
+Every later `git push` to `main` redeploys automatically; pull requests get their own preview URLs.
+
+### Set your site URL (recommended)
+The site needs to know its own public address — it is used in SEO tags, `sitemap.xml`, `robots.txt`,
+and in the **product links inside WhatsApp order messages**.
+
+In Vercel: **Project → Settings → Environment Variables → Add**
+
+| Name | Value | Environments |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `https://your-domain.com` | Production, Preview, Development |
+
+No trailing slash. The `NEXT_PUBLIC_` prefix is required so the value matches on server and browser —
+without it, WhatsApp product links would point at the wrong host.
+
+If you skip this, the app safely falls back to `https://idrisiya-couture.vercel.app`.
+
+After changing the variable you must **redeploy** for it to take effect
+(Deployments → ⋯ → Redeploy).
+
+### Custom domain
+**Project → Settings → Domains → Add**, then point your DNS at Vercel as instructed.
+Once the domain is live, set `NEXT_PUBLIC_SITE_URL` to it and redeploy so shared links and SEO tags
+use the branded address.
+
+### Notes
+- `vercel.json` adds security headers (`X-Content-Type-Options`, `X-Frame-Options`,
+  `Referrer-Policy`, `Permissions-Policy`) plus long-lived caching for `/images`, `/fonts` and `/brand`.
+- `next.config.mjs` fails the build on TypeScript or lint errors, and enables AVIF/WebP image
+  optimisation on Vercel.
+- `package.json` declares `node >= 20.9.0`; Vercel builds on Node 22.
+- No database, API keys or payment credentials are required. Orders go to WhatsApp.
+- **GitHub Pages will not work** for this project — it needs Next.js server features
+  (image optimisation, dynamic `/shop` search params, generated `sitemap.xml` / `robots.txt`).
+
 
 ---
 
